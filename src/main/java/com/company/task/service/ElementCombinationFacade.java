@@ -24,9 +24,9 @@ public class ElementCombinationFacade<T> {
         this.objectMapper = objectMapper;
     }
 
-    public List<List<T>> resolveCombinationForFile(File file, TypeReference<List<List<T>>> ref) {
+    public List<List<T>> resolveCombinationForFile(File file) {
         try {
-            List<List<T>> dto = objectMapper.readValue(file, ref);
+            List<List<T>> dto = objectMapper.readValue(file, new TypeReference<>() {});
             List<Element<T>> elements = elementMapper.mapFromDTOList(dto);
 
             List<Element<T>> combinationResult = combinationResolver.resolveCombinations(elements);

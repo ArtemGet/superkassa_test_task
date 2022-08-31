@@ -1,7 +1,5 @@
 package com.company.task.element;
 
-import com.company.task.element.Element;
-import com.company.task.element.ElementFactory;
 import com.company.task.mapper.DoubleSideMapper;
 
 import java.util.List;

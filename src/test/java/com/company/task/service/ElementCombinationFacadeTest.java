@@ -5,7 +5,6 @@ import com.company.task.combination.ElementCombinationResolverAdapter;
 import com.company.task.element.ElementFactory;
 import com.company.task.element.ElementMapper;
 import com.company.task.exception.UnableToMapFileException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,20 +34,13 @@ class ElementCombinationFacadeTest {
     public void resolveCombinationForFile_shouldThrowEx_whenNoSuchFileFound() {
         Assertions.assertThrows(UnableToMapFileException.class, () ->
                 stringElementCombinationFacade
-                        .resolveCombinationForFile(
-                                new File("doesnotexist.json"),
-                                new TypeReference<>() {
-                                }
-                        ));
+                        .resolveCombinationForFile(new File("doesnotexist.json")));
     }
 
     @Test
     public void resolveCombinationForFile_shouldCombine_whenTestData() {
-        List<List<String>> actual = stringElementCombinationFacade.resolveCombinationForFile(
-                new File("src/main/resources/test.json"),
-                new TypeReference<>() {
-                }
-        );
+        List<List<String>> actual = stringElementCombinationFacade
+                .resolveCombinationForFile(new File("src/main/resources/test.json"));
         List<List<String>> expected = Arrays.asList(
                 Arrays.asList("a1", "a2", "a3", "a4"),
                 Arrays.asList("b1", "c2", "c3", "b4"),
@@ -64,11 +56,8 @@ class ElementCombinationFacadeTest {
 
     @Test
     public void resolveCombinationForFile_shouldCombine_whenDifferentSizes() {
-        List<List<String>> actual = stringElementCombinationFacade.resolveCombinationForFile(
-                new File("src/main/resources/test_diff_size.json"),
-                new TypeReference<>() {
-                }
-        );
+        List<List<String>> actual = stringElementCombinationFacade
+                .resolveCombinationForFile(new File("src/main/resources/test_diff_size.json"));
         List<List<String>> expected = Arrays.asList(
                 Arrays.asList("a1", "a2", "a3", "a4"),
                 Arrays.asList("b1", "c2", "c3", "b4"),
@@ -85,11 +74,8 @@ class ElementCombinationFacadeTest {
 
     @Test
     public void resolveCombinationForFile_shouldReturnEmptyList_whenEmptyData() {
-        List<List<String>> actual = stringElementCombinationFacade.resolveCombinationForFile(
-                new File("src/main/resources/test_empty.json"),
-                new TypeReference<>() {
-                }
-        );
+        List<List<String>> actual = stringElementCombinationFacade
+                .resolveCombinationForFile(new File("src/main/resources/test_empty.json"));
         List<List<String>> expected = new ArrayList<>();
 
         Assertions.assertEquals(expected, actual);
@@ -97,11 +83,8 @@ class ElementCombinationFacadeTest {
 
     @Test
     public void resolveCombinationForFile_shouldCombineWithoutDuplicates_whenDuplicatesExists() {
-        List<List<String>> actual = stringElementCombinationFacade.resolveCombinationForFile(
-                new File("src/main/resources/test_duplicates.json"),
-                new TypeReference<>() {
-                }
-        );
+        List<List<String>> actual = stringElementCombinationFacade
+                .resolveCombinationForFile(new File("src/main/resources/test_duplicates.json"));
         List<List<String>> expected = Arrays.asList(
                 Arrays.asList("a1", "a2", "a3", "a4"),
                 Arrays.asList("b1", "c2", "c3", "b4"),
