@@ -27,11 +27,14 @@ class StringElementTest {
     }
 
     @Test
-    public void merge_shouldReturnNull_whenBothElementsHaveNullInOnePlace() {
+    public void merge_shouldMergeElementsAndSetInconsistentState_whenHaveNullInOnePlace() {
         Element<String> first = new Element<>(Arrays.asList("1", null));
         Element<String> second = new Element<>(Arrays.asList(null, null));
 
-        Assertions.assertNull(first.merge(second));
+        Element<String> expected = new Element<>(Arrays.asList("1", null), false);
+
+        Assertions.assertEquals(expected, first.merge(second));
+        Assertions.assertFalse(expected.isConsistent);
     }
 
     @Test

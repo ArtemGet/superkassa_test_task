@@ -16,17 +16,28 @@ public class ElementCombinationResolver<T> implements CombinationResolver<Elemen
             if (currentElement.isNullFree) {
                 result.add(currentElement);
             } else {
-                for (int j = i + 1; j < toMerge.size(); j++) {
-                    Element<T> nextElement = toMerge.get(j);
-                    Element<T> mergeResult = currentElement.merge(nextElement);
-
-                    if (mergeResult != null) {
-                        result.add(mergeResult);
-                    }
-                }
+                this.searchForCombinations(i + 1, currentElement, toMerge, result);
             }
         }
 
         return result;
+    }
+
+    private void searchForCombinations(int currentPos,
+                                       Element<T> currentElement,
+                                       List<? extends Element<T>> toMerge,
+                                       Set<Element<T>> result) {
+        for (int j = currentPos; j < toMerge.size(); j++) {
+            Element<T> nextElement = toMerge.get(j);
+            Element<T> mergeResult = currentElement.merge(nextElement);
+
+            if (mergeResult != null && mergeResult.isConsistent) {
+                result.add(mergeResult);
+            } else if (mergeResult != null) {
+                for (int k = j + 1; k < toMerge.size(); k++) {
+                    this.searchForCombinations(currentPos + 1, mergeResult, toMerge, result);
+                }
+            }
+        }
     }
 }

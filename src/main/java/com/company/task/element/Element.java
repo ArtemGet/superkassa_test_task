@@ -9,11 +9,19 @@ import java.util.Objects;
 
 public class Element<T> implements Mergeable<Element<T>> {
     final List<T> entries;
-    public boolean isNullFree;
+    public final boolean isNullFree;
+    public final boolean isConsistent;
 
     Element(List<T> entries) {
         this.entries = entries;
         this.isNullFree = !entries.contains(null);
+        this.isConsistent = true;
+    }
+
+    Element(List<T> entries, boolean isConsistent) {
+        this.entries = entries;
+        this.isNullFree = !entries.contains(null);
+        this.isConsistent = isConsistent;
     }
 
     @Override
@@ -23,17 +31,32 @@ public class Element<T> implements Mergeable<Element<T>> {
         }
 
         List<T> entries = new ArrayList<>();
+        boolean isConsistent = true;
         for (int i = 0; i < this.entries.size(); i++) {
-            if (this.entries.get(i) == null && another.entries.get(i) != null) {
-                entries.add(another.entries.get(i));
-            } else if (this.entries.get(i) != null && another.entries.get(i) == null) {
-                entries.add(this.entries.get(i));
-            } else {
+            if (this.entries.get(i) != null && another.entries.get(i) != null) {
                 return null;
             }
+            isConsistent = mergeEntries(
+                    this.entries.get(i),
+                    another.entries.get(i),
+                    entries,
+                    isConsistent);
         }
 
-        return new Element<>(Collections.unmodifiableList(entries));
+        return new Element<>(Collections.unmodifiableList(entries), isConsistent);
+    }
+
+    private boolean mergeEntries(T thisEntry, T anotherEntry, List<T> entries, boolean prevState) {
+        if (thisEntry == null && anotherEntry != null) {
+            entries.add(anotherEntry);
+        } else if (thisEntry != null && anotherEntry == null) {
+            entries.add(thisEntry);
+        } else if (thisEntry == null) {
+            entries.add(null);
+            return false;
+        }
+
+        return prevState;
     }
 
     @Override

@@ -97,4 +97,17 @@ class ElementCombinationFacadeTest {
 
         Assertions.assertEquals(expected, actual);
     }
+
+    @Test void resolveCombinationForFile_shouldCombine_whenManyDifferentStringsCombines() {
+        List<List<String>> actual = stringElementCombinationFacade
+                .resolveCombinationForFile(new File("src/main/resources/test_many_string_combination.json"));
+        List<List<String>> expected = Arrays.asList(
+                Arrays.asList("a1", "b2", "c3", "b4"),
+                Arrays.asList("a1", "b2", "b3", "b4"),
+                Arrays.asList("a1", "d2", "c3", "d4"),
+                Arrays.asList("a1", "d2", "b3", "d4")
+        );
+
+        Assertions.assertEquals(expected, actual);
+    }
 }

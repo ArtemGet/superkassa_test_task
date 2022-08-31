@@ -1,0 +1,7 @@
+[
+  [ "a1",   null,   null,   null   ],
+  [ null,   "b2",   null,   "b4"   ],
+  [ null,   null,   "c3",   null   ],
+  [ null,   null,   "b3",   null   ],
+  [ null,   "d2",   null,   "d4"   ]
+]
